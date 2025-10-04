@@ -1,42 +1,24 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+import tensorflow as tf
+from tensorflow.keras import layers
 
-class SplitAttention(nn.Module):
-    """
-    分裂注意力机制模块
-    参考ResNeSt中的实现思路，将特征分组并分别计算注意力
-    """
-    def __init__(self, channel, num_groups=2, reduction=16):
-        super(SplitAttention, self).__init__()
-        self.channel = channel
+class SplitAttention(layers.Layer):
+    """分裂注意力模块（分组通道注意力）"""
+    def __init__(self, channels, num_groups=4, ratio=16, **kwargs):
+        super(SplitAttention, self).__init__(**kwargs)
+        self.channels = channels
         self.num_groups = num_groups
-        self.group_channels = channel // num_groups
-        
-        # 全局平均池化
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        
-        # 每个组的注意力计算
-        self.fc1 = nn.Linear(channel, channel // reduction, bias=False)
-        self.relu = nn.ReLU(inplace=True)
-        self.fc2 = nn.Linear(channel // reduction, channel, bias=False)
-        self.softmax = nn.Softmax(dim=1)
+        self.group_channels = channels // num_groups
+        self.fc1 = layers.Dense(self.group_channels // ratio, activation="relu", use_bias=False)
+        self.fc2 = layers.Dense(self.group_channels, activation="sigmoid", use_bias=False)
 
-    def forward(self, x):
-        b, c, h, w = x.size()
-        
-        # 全局平均池化
-        y = self.avg_pool(x).view(b, c)  # [b, c]
-        
-        # 计算注意力权重
-        y = self.fc1(y)  # [b, c//reduction]
-        y = self.relu(y)
-        y = self.fc2(y)  # [b, c]
-        
-        # 重塑以进行分组注意力计算
-        y = y.view(b, self.num_groups, self.group_channels)  # [b, num_groups, group_channels]
-        y = self.softmax(y)  # 在组维度上应用softmax
-        y = y.view(b, c, 1, 1)  # [b, c, 1, 1]
-        
-        # 应用注意力权重
-        return x * y.expand_as(x)
+    def call(self, inputs):
+        batch, h, w, _ = inputs.shape
+        # 1. 通道分组
+        grouped = tf.reshape(inputs, (-1, h, w, self.num_groups, self.group_channels))
+        # 2. 组内全局池化 + 权重学习
+        se = layers.GlobalAveragePooling2D()(grouped)
+        se = self.fc1(se)
+        se = self.fc2(se)
+        # 3. 应用注意力并重组通道
+        output = grouped * tf.reshape(se, (-1, 1, 1, self.num_groups, self.group_channels))
+        return tf.reshape(output, (-1, h, w, self.channels))
