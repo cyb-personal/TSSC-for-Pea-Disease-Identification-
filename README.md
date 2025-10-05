@@ -1,7 +1,7 @@
 # TSSC-for-Pea-Disease-Identification
 
 
-> 官方TensorFlow实现 | 论文处于投刊阶段，标题：《TSSC: A New Deep Learning Model for Accurate Pea Leaf Disease Identification》  
+> 官方TensorFlow 和 Keras实现 | 论文处于投刊阶段，标题：《TSSC: A New Deep Learning Model for Accurate Pea Leaf Disease Identification》  
 
 
 > 提出时空尺度通道网络（TSSC）模型，基于TensorFlow框架实现五类豌豆常见病害与健康状态的高精度识别，助力农业病害智能化诊断。  
@@ -17,8 +17,8 @@
 ## 2. TSSC核心创新点  
 
 1. **三层注意力机制协同**：  
-   - **SE注意力（Squeeze-and-Excitation）**：通过全局信息压缩与通道权重学习，强化关键病害特征通道；  
-   - **三邻域通道注意力**：考虑每个通道与左右邻域通道的关联性，动态优化特征表达；  
+   - **互补注意力（ complemented Squeeze-and-Excitation）**：从原始特征中提取主要的显著局部特征，从抑制的剩余通道信息中提取次级显著特征； 
+   - **K通道注意力**：考虑每个通道与左右邻域通道的关联性，动态优化特征表达；  
    - **分散注意力（Split Attention）**：将通道分组并独立学习注意力，增强局部特征交互能力。  
 
 2. **高效特征提取结构**：  
