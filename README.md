@@ -19,7 +19,7 @@
 1. **三层注意力机制协同**：  
    - **SE注意力（Squeeze-and-Excitation）**：通过全局信息压缩与通道权重学习，强化关键病害特征通道；  
    - **三邻域通道注意力**：考虑每个通道与左右邻域通道的关联性，动态优化特征表达；  
-   - **分裂注意力（Split Attention）**：将通道分组并独立学习注意力，增强局部特征交互能力。  
+   - **分散注意力（Split Attention）**：将通道分组并独立学习注意力，增强局部特征交互能力。  
 
 2. **高效特征提取结构**：  
    采用4个精心设计的卷积层（核大小4×4、2×2、5×5、3×3），配合池化操作逐步压缩空间维度，在保留病害细节特征的同时提升计算效率。  
@@ -67,8 +67,9 @@ pea_disease_dataset/
 conda create -n tssc-tf python=3.10  
 conda activate tssc-tf  
 
-# 2. 安装TensorFlow（支持GPU/CPU，示例为CPU版本）  
-pip install tensorflow==2.15.0
+# 2. 安装TensorFlow（支持GPU/CPU，示例为GPU版本）  
+pip install Tensorflow-gpu1.14.0
+pip install Keras2.2.4. 
 
 # 3. 安装其他依赖库  
 pip install numpy~=2.0.2 matplotlib~=3.9.4 opencv-python~=4.12.0.88  
@@ -115,7 +116,7 @@ python train.py \
 python predict.py \  
   --image_path ./examples/pea_powdery_mildew.jpg \  # 输入图像路径  
   --weight_path ./weights/best_tssc.h5 \  # 预训练权重路径（TensorFlow .h5格式）  
-  --device CPU  
+  --device GPU  
 ```  
 
 
