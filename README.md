@@ -1,7 +1,7 @@
 # TSSC-for-Pea-Disease-Identification
 
 
-> 官方TensorFlow实现 | 论文处于投刊阶段，标题：《TSSC: A New Deep Learning Model for Accurate Pea Leaf Disease Identification》  
+> 官方TensorFlow 和 Keras实现 | 论文处于投刊阶段，标题：《TSSC: A New Deep Learning Model for Accurate Pea Leaf Disease Identification》  
 
 
 > 提出时空尺度通道网络（TSSC）模型，基于TensorFlow框架实现五类豌豆常见病害与健康状态的高精度识别，助力农业病害智能化诊断。  
@@ -17,9 +17,9 @@
 ## 2. TSSC核心创新点  
 
 1. **三层注意力机制协同**：  
-   - **SE注意力（Squeeze-and-Excitation）**：通过全局信息压缩与通道权重学习，强化关键病害特征通道；  
-   - **三邻域通道注意力**：考虑每个通道与左右邻域通道的关联性，动态优化特征表达；  
-   - **分裂注意力（Split Attention）**：将通道分组并独立学习注意力，增强局部特征交互能力。  
+   - **互补注意力（ complemented Squeeze-and-Excitation）**：从原始特征中提取主要的显著局部特征，从抑制的剩余通道信息中提取次级显著特征； 
+   - **K通道注意力**：考虑每个通道与左右邻域通道的关联性，动态优化特征表达；  
+   - **分散注意力（Split Attention）**：将通道分组并独立学习注意力，增强局部特征交互能力。  
 
 2. **高效特征提取结构**：  
    采用4个精心设计的卷积层（核大小4×4、2×2、5×5、3×3），配合池化操作逐步压缩空间维度，在保留病害细节特征的同时提升计算效率。  
@@ -36,7 +36,7 @@
 
 | 数据集名称 | 包含类别 | 图像总数 | 图像分辨率 | 数据分布（训练:验证:测试） |
 |------------|-------------------------|----------|------------|-----------------------|
-| 五类豌豆数据集 | 白粉病（Powdery mildew）、根腐病（Root rot）、潜叶虫（Leaf miner）、褐斑病（Brown spot） + 健康叶片（Healthy） | 12,000+ | 统一resize至400×400（适配模型输入） | 7:1:2（通过代码自动划分） |  
+| 五类豌豆数据集 | 白粉病（Powdery mildew）、根腐病（Root rot）、潜叶虫（Leaf miner）、褐斑病（Brown spot） + 健康叶片（Healthy） | 7,000+ | 统一resize至400×400（适配模型输入） | 3:1:1 |  
 
 
 ### 3.2 数据集获取与结构  
@@ -67,8 +67,9 @@ pea_disease_dataset/
 conda create -n tssc-tf python=3.10  
 conda activate tssc-tf  
 
-# 2. 安装TensorFlow（支持GPU/CPU，示例为CPU版本）  
-pip install tensorflow==2.15.0
+# 2. 安装TensorFlow（支持GPU/CPU，示例为GPU版本）  
+pip install Tensorflow-gpu1.14.0
+pip install Keras2.2.4. 
 
 # 3. 安装其他依赖库  
 pip install numpy~=2.0.2 matplotlib~=3.9.4 opencv-python~=4.12.0.88  
@@ -115,7 +116,7 @@ python train.py \
 python predict.py \  
   --image_path ./examples/pea_powdery_mildew.jpg \  # 输入图像路径  
   --weight_path ./weights/best_tssc.h5 \  # 预训练权重路径（TensorFlow .h5格式）  
-  --device CPU  
+  --device GPU  
 ```  
 
 
