@@ -155,24 +155,8 @@ tssc-for-pea-disease-identification/
 3. **数据集扩展**：如需新增病害类别，需补充对应图像数据并修改`TSSC.py`中输出层的`num_classes`参数。  
 
 
-## 8. 引用与联系方式  
 
-### 8.1 引用方式  
-
-论文处于投刊阶段，正式发表后将更新BibTeX引用格式，当前可临时引用：  
-
-```bibtex  
-@article{tssc_pea_disease,  
-  title={TSSC: A New Deep Learning Model for Accurate Pea Leaf Disease Identification},  
-  author={[作者姓名，待发表时补充]},  
-  journal={[期刊名称，待录用后补充]},  
-  year={2024},  
-  note={Manuscript submitted for publication}  
-}  
-```  
-
-
-### 8.2 联系方式  
+### 8 联系方式  
 
 若遇到代码运行问题或学术交流需求，请联系：  
 - 邮箱：changyibu@huuc.edu.cn  
