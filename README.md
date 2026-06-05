@@ -156,7 +156,7 @@ tssc-for-pea-disease-identification/
 
 
 
-### 8 联系方式  
+## 8. 联系方式  
 
 若遇到代码运行问题或学术交流需求，请联系：  
 - 邮箱：changyibu@huuc.edu.cn  
