@@ -42,8 +42,7 @@
 ### 3.2 数据集获取与结构  
 
 1. **下载链接**：  
-   百度网盘链接：https://pan.baidu.com/s/18FxZMhVcK-5hRwAhoJS8mQ  
-   提取码: bq9g  
+ https://pan.baidu.com/s/18FxZMhVcK-5hRwAhoJS8mQ  
 
 2. **文件夹组织**（下载后解压至项目根目录，结构如下）：  
 ```  
